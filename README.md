@@ -13,7 +13,9 @@ OR
 # Component/Unit tests
 Npm run test in that same folder will run all the component/unit tet that are localted in the __tests__ folder.
 
-# E2E Tests live in `e2etests/` (configured in `playwright.config.ts`). The dev server runs on `http://localhost:5177`.
+# E2E Tests
+
+E2E Tests live in `e2etests/` (configured in `playwright.config.ts`). The dev server runs on `http://localhost:5177`.
 
 ```bash
 npx playwright test                        # Run all tests (all browsers)
