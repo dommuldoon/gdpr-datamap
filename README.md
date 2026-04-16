@@ -1,4 +1,4 @@
- GDPR Datamap Demo App
+# GDPR Datamap Demo App
 
 This app is built with React/Typescript as best according to the brief given. Claude AI has been used and configured with context limiting instruction files and a bit of Agentic Orchestration. In order to get better results and the best use of AI we need to give it as clear as possible instructions.
 That being said after each section or piece of AI generated code is completed I do review it like any commit or PR. I find it still requires some manual refactoring and rearragning of the code - and it is also essential to know what is going on as if you wrote the code yourself.
