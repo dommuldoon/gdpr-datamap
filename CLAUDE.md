@@ -17,6 +17,13 @@ npm run dev       # Start dev server
 npm run build     # Production build (tsc + vite build)
 npm run preview   # Preview production build
 npm run lint      # ESLint
+
+# Playwright e2e tests (dev server must be running, or webServer auto-starts it)
+npx playwright test                        # Run all tests (all browsers)
+npx playwright test --project=chromium    # Chromium only
+npx playwright test tests/foo.spec.ts     # Single file
+npx playwright test --ui                  # Interactive UI mode
+npx playwright test --debug               # Step-through debugger
 ```
 
 ## Data Model
