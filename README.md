@@ -3,12 +3,14 @@
 This app is built with React/Typescript as best according to the brief given. Claude AI has been used and configured with context limiting instruction files and a bit of Agentic Orchestration. In order to get better results and the best use of AI we need to give it as clear as possible instructions.
 That being said after each section or piece of AI generated code is completed I do review it like any commit or PR. I find it still requires some manual refactoring and rearragning of the code - and it is also essential to know what is going on as if you wrote the code yourself.
 
-# You can test this app live deployed on a server here: https://gdpr-datamap.vercel.app/
+# View live on web:
+You can test this app live deployed on a server here: https://gdpr-datamap.vercel.app/
 
 OR
 
-# To run locally you can clone the app, CD into /fides-dashboard and run npm install. 
-# When that completes then type npm run dev to start the app locally.
+# To run locally 
+You can clone the app, CD into /fides-dashboard and run npm install. 
+When that completes then type npm run dev to start the app locally.
 
 # Component/Unit tests
 Npm run test in that same folder will run all the component/unit tet that are localted in the __tests__ folder.
