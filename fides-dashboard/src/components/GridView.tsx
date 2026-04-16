@@ -41,25 +41,20 @@ export const GridView = ({
   showArrows
 }: GridViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cardRefs, setCardRefs] = useState<Map<string, HTMLDivElement>>(
-    new Map()
-  );
+  // Use a plain ref (not state) to avoid infinite re-render loops from ref callbacks
+  const cardRefsMap = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const setRef = useCallback(
     (key: string) => (el: HTMLDivElement | null) => {
-      setCardRefs((prev) => {
-        if (el) {
-          const next = new Map(prev);
-          next.set(key, el);
-          return next;
-        }
-        const next = new Map(prev);
-        next.delete(key);
-        return next;
-      });
+      if (el) {
+        cardRefsMap.current.set(key, el);
+      } else {
+        cardRefsMap.current.delete(key);
+      }
     },
     []
   );
+
 
   const groups = groupBy(systems, layoutMode);
 
@@ -77,7 +72,7 @@ export const GridView = ({
       {showArrows && (
         <ArrowOverlay
           systems={systems}
-          cardRefs={cardRefs}
+          cardRefs={cardRefsMap.current}
           containerRef={containerRef}
         />
       )}
