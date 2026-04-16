@@ -15,14 +15,15 @@ import 'reactflow/dist/style.css'
 import type { System, LayoutMode } from '@/types'
 import { SystemCard } from './SystemCard'
 import { colorForSystem, hexToRgba } from '@/lib/systemColors'
+import { useFilters } from '@/store'
 
 // Custom node that wraps SystemCard
 function SystemNode({ data }: { data: { system: System } }) {
   return (
     <div style={{ width: 220 }} className="relative">
-      <Handle type="target" position={Position.Left} className="!bg-indigo-400 !border-indigo-300" />
-      <SystemCard system={data.system} dimmed={data.dimmed} />
-      <Handle type="source" position={Position.Right} className="!bg-indigo-400 !border-indigo-300" />
+      <Handle type="target" position={Position.Left} className="bg-indigo-400! border-indigo-300!" />
+      <SystemCard system={data.system} />
+      <Handle type="source" position={Position.Right} className="bg-indigo-400! border-indigo-300!" />
     </div>
   )
 }
@@ -67,10 +68,13 @@ function buildLayout(systems: System[], mode: LayoutMode): Node[] {
   }
 
   const nodes: Node[] = []
+  const seen = new Set<string>()
   let colX = 0
 
   for (const [, members] of groups.entries()) {
     members.forEach((system, rowIdx) => {
+      if (seen.has(system.fidesKey)) return  // skip duplicates — React Flow requires unique IDs
+      seen.add(system.fidesKey)
       nodes.push({
         id: system.fidesKey,
         type: 'system',
@@ -87,6 +91,7 @@ function buildLayout(systems: System[], mode: LayoutMode): Node[] {
 }
 
 export function GraphView({ systems, layoutMode, showArrows }: Props) {
+  const { darkMode } = useFilters()
   const initialNodes = useMemo(() => buildLayout(systems, layoutMode), [systems, layoutMode])
 
   // Edges are derived directly — no state needed since users can't drag them
@@ -118,7 +123,10 @@ export function GraphView({ systems, layoutMode, showArrows }: Props) {
   }, [])
 
   return (
-    <div className="w-full h-[75vh] rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
+    <div
+      className="w-full h-[75vh] rounded-xl overflow-hidden"
+      style={{ border: '1px solid var(--card-border)', background: 'var(--graph-bg)' }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -130,12 +138,13 @@ export function GraphView({ systems, layoutMode, showArrows }: Props) {
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
       >
-        <Background color="#e2e8f0" gap={20} />
-        <Controls className="!shadow-sm !border-slate-200" />
+        <Background color={darkMode ? '#1e2030' : '#e2e8f0'} gap={20} />
+        <Controls className="shadow-sm! border-slate-200!" />
         <MiniMap
           nodeColor={getNodeColor}
-          maskColor="rgb(248 250 252 / 0.8)"
-          className="!rounded-lg !border-slate-200"
+          maskColor={darkMode ? 'rgba(15,16,24,0.85)' : 'rgba(248,250,252,0.85)'}
+          style={{ background: darkMode ? '#12131c' : '#f8fafc' }}
+          className="rounded-lg!"
         />
       </ReactFlow>
     </div>

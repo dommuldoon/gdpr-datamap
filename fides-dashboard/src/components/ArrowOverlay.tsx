@@ -21,8 +21,16 @@ function getCenter(el: HTMLDivElement, container: HTMLDivElement) {
   const elRect = el.getBoundingClientRect()
   const cRect = container.getBoundingClientRect()
   return {
-    x: elRect.left - cRect.left + elRect.width / 2,
-    y: elRect.top - cRect.top + elRect.height / 2,
+    x: elRect.left - cRect.left + container.scrollLeft + elRect.width / 2,
+    y: elRect.top - cRect.top + container.scrollTop + elRect.height / 2,
+  }
+}
+
+// cardRefs uses compound keys "group/fidesKey" so each column instance has its own slot.
+// This helper finds the first live element for a given fidesKey.
+function findEl(cardRefs: Map<string, HTMLDivElement>, fidesKey: string): HTMLDivElement | undefined {
+  for (const [key, el] of cardRefs) {
+    if (key === fidesKey || key.endsWith(`/${fidesKey}`)) return el
   }
 }
 
@@ -35,16 +43,15 @@ export function ArrowOverlay({ systems, cardRefs, containerRef }: Props) {
   const recalculate = useCallback(() => {
     const container = containerRef.current
     if (!container) return
-    const cRect = container.getBoundingClientRect()
-    setSize({ w: cRect.width, h: cRect.height })
+    setSize({ w: container.scrollWidth, h: container.scrollHeight })
 
     const next: Arrow[] = []
     for (const system of systems) {
-      const fromEl = cardRefs.get(system.fidesKey)
+      const fromEl = findEl(cardRefs, system.fidesKey)
       if (!fromEl) continue
       const color = colorForSystem(system.fidesKey, allKeys)
       for (const dep of system.dependencies) {
-        const toEl = cardRefs.get(dep)
+        const toEl = findEl(cardRefs, dep)
         if (!toEl) continue
         const from = getCenter(fromEl, container)
         const to = getCenter(toEl, container)

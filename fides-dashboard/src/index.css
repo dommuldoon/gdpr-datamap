@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:is(.dark, .dark *));
 
 @layer base {
   :root {
@@ -22,15 +26,39 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+
+    --page-bg: #f4f5f9;
+    --header-bg: #ffffff;
+    --card-bg: #ffffff;
+    --card-border: rgba(203,213,225,0.8);
+    --col-header-bg: rgba(255,255,255,0.9);
+    --toolbar-bg: rgba(255,255,255,0.98);
+    --graph-bg: #f8fafc;
+    --graph-dot: #e2e8f0;
+    --graph-minimap-mask: rgba(248,250,252,0.85);
+  }
+
+  .dark {
+    --page-bg: #0c0d13;
+    --header-bg: #12131c;
+    --card-bg: #181922;
+    --card-border: rgba(36,37,52,0.9);
+    --col-header-bg: rgba(18,19,28,0.9);
+    --toolbar-bg: rgba(18,19,28,0.98);
+    --graph-bg: #0f1018;
+    --graph-dot: #1e2030;
+    --graph-minimap-mask: rgba(15,16,24,0.85);
   }
 }
 
 @layer base {
   * {
     border-color: hsl(var(--border));
+    box-sizing: border-box;
   }
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

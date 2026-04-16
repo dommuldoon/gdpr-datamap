@@ -93,13 +93,22 @@ export function GridView({ systems, layoutMode, showArrows }: GridViewProps) {
               className="flex flex-col gap-3"
             >
               {/* Column header */}
-              <div className="sticky top-16 z-20 bg-slate-50/90 backdrop-blur-sm rounded-lg pl-3 py-2 border border-slate-200">
-                <h2 className="wrap-normal text-xs font-semibold uppercase tracking-widest text-slate-500">
-                  {group}
-                </h2>
-                <p className="text-[11px] text-slate-400">
-                  {members.length} system{members.length !== 1 ? "s" : ""}
-                </p>
+              <div className="sticky top-[105px] z-20">
+                <div
+                  className="backdrop-blur-sm rounded-lg px-3 py-2"
+                  style={{
+                    background: 'var(--col-header-bg)',
+                    border: '1px solid var(--card-border)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                  }}
+                >
+                  <h2 className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                    {group}
+                  </h2>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">
+                    {members.length} system{members.length !== 1 ? "s" : ""}
+                  </p>
+                </div>
               </div>
 
               {/* Cards */}
@@ -109,7 +118,7 @@ export function GridView({ systems, layoutMode, showArrows }: GridViewProps) {
                     <SystemCard
                       key={`${group}-${system.fidesKey}`}
                       system={system}
-                      innerRef={setRef(system.fidesKey)}
+                      innerRef={setRef(`${group}/${system.fidesKey}`)}
                     />
                   ))}
                 </AnimatePresence>

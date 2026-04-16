@@ -7,15 +7,25 @@ interface FilterState {
   layoutMode: LayoutMode
   viewMode: ViewMode
   showArrows: boolean
+  darkMode: boolean
   toggleDataUse: (use: string) => void
   toggleCategory: (cat: string) => void
   setLayoutMode: (mode: LayoutMode) => void
   setViewMode: (mode: ViewMode) => void
   toggleArrows: () => void
+  toggleDarkMode: () => void
   clearFilters: () => void
 }
 
 const FilterContext = createContext<FilterState | null>(null)
+
+function getInitialDark(): boolean {
+  try {
+    const stored = localStorage.getItem('fides-dark-mode')
+    if (stored !== null) return stored === 'true'
+  } catch { /* ignore */ }
+  return true // dark by default
+}
 
 export function FilterProvider({ children }: { children: ReactNode }) {
   const [selectedDataUses, setSelectedDataUses] = useState<string[]>([])
@@ -23,6 +33,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('systemType')
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [showArrows, setShowArrows] = useState(false)
+  const [darkMode, setDarkMode] = useState<boolean>(getInitialDark)
 
   function toggleDataUse(use: string) {
     setSelectedDataUses(prev =>
@@ -40,6 +51,14 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     setShowArrows(prev => !prev)
   }
 
+  function toggleDarkMode() {
+    setDarkMode(prev => {
+      const next = !prev
+      try { localStorage.setItem('fides-dark-mode', String(next)) } catch { /* ignore */ }
+      return next
+    })
+  }
+
   function clearFilters() {
     setSelectedDataUses([])
     setSelectedCategories([])
@@ -53,11 +72,13 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         layoutMode,
         viewMode,
         showArrows,
+        darkMode,
         toggleDataUse,
         toggleCategory,
         setLayoutMode,
         setViewMode,
         toggleArrows,
+        toggleDarkMode,
         clearFilters,
       }}
     >
