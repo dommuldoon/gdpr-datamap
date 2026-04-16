@@ -1,90 +1,104 @@
-import { useEffect, useState, useCallback } from 'react'
-import type { System } from '@/types'
-import { colorForSystem, hexToRgba } from '@/lib/systemColors'
+import { useEffect, useState, useCallback } from "react";
+import type { System } from "@/types";
+import { colorForSystem, hexToRgba } from "@/lib/systemColors";
 
-interface Props {
-  systems: System[]
-  cardRefs: Map<string, HTMLDivElement>
-  containerRef: React.RefObject<HTMLDivElement | null>
+interface ArrowOverlayProps {
+  systems: System[];
+  cardRefs: Map<string, HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 interface Arrow {
-  id: string
-  x1: number
-  y1: number
-  x2: number
-  y2: number
-  color: string
+  id: string;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  color: string;
 }
 
-function getCenter(el: HTMLDivElement, container: HTMLDivElement) {
-  const elRect = el.getBoundingClientRect()
-  const cRect = container.getBoundingClientRect()
+const getCenter = (el: HTMLDivElement, container: HTMLDivElement) => {
+  const elRect = el.getBoundingClientRect();
+  const cRect = container.getBoundingClientRect();
   return {
     x: elRect.left - cRect.left + container.scrollLeft + elRect.width / 2,
-    y: elRect.top - cRect.top + container.scrollTop + elRect.height / 2,
-  }
-}
+    y: elRect.top - cRect.top + container.scrollTop + elRect.height / 2
+  };
+};
 
 // cardRefs uses compound keys "group/fidesKey" so each column instance has its own slot.
 // This helper finds the first live element for a given fidesKey.
-function findEl(cardRefs: Map<string, HTMLDivElement>, fidesKey: string): HTMLDivElement | undefined {
+const findEl = (
+  cardRefs: Map<string, HTMLDivElement>,
+  fidesKey: string
+): HTMLDivElement | undefined => {
   for (const [key, el] of cardRefs) {
-    if (key === fidesKey || key.endsWith(`/${fidesKey}`)) return el
+    if (key === fidesKey || key.endsWith(`/${fidesKey}`)) return el;
   }
-}
+};
 
-export function ArrowOverlay({ systems, cardRefs, containerRef }: Props) {
-  const [arrows, setArrows] = useState<Arrow[]>([])
-  const [size, setSize] = useState({ w: 0, h: 0 })
+export const ArrowOverlay = ({
+  systems,
+  cardRefs,
+  containerRef
+}: ArrowOverlayProps) => {
+  const [arrows, setArrows] = useState<Arrow[]>([]);
+  const [size, setSize] = useState({ w: 0, h: 0 });
 
-  const allKeys = systems.map(s => s.fidesKey)
+  const allKeys = systems.map((s) => s.fidesKey);
 
   const recalculate = useCallback(() => {
-    const container = containerRef.current
-    if (!container) return
-    setSize({ w: container.scrollWidth, h: container.scrollHeight })
+    const container = containerRef.current;
+    if (!container) return;
+    setSize({ w: container.scrollWidth, h: container.scrollHeight });
 
-    const next: Arrow[] = []
+    const next: Arrow[] = [];
     for (const system of systems) {
-      const fromEl = findEl(cardRefs, system.fidesKey)
-      if (!fromEl) continue
-      const color = colorForSystem(system.fidesKey, allKeys)
+      const fromEl = findEl(cardRefs, system.fidesKey);
+      if (!fromEl) continue;
+      const color = colorForSystem(system.fidesKey, allKeys);
       for (const dep of system.dependencies) {
-        const toEl = findEl(cardRefs, dep)
-        if (!toEl) continue
-        const from = getCenter(fromEl, container)
-        const to = getCenter(toEl, container)
-        next.push({ id: `${system.fidesKey}->${dep}`, x1: from.x, y1: from.y, x2: to.x, y2: to.y, color })
+        const toEl = findEl(cardRefs, dep);
+        if (!toEl) continue;
+        const from = getCenter(fromEl, container);
+        const to = getCenter(toEl, container);
+        next.push({
+          id: `${system.fidesKey}->${dep}`,
+          x1: from.x,
+          y1: from.y,
+          x2: to.x,
+          y2: to.y,
+          color
+        });
       }
     }
-    setArrows(next)
-  }, [systems, cardRefs, containerRef, allKeys])
+    setArrows(next);
+  }, [systems, cardRefs, containerRef, allKeys]);
 
   useEffect(() => {
-    const t = setTimeout(recalculate, 100)
-    return () => clearTimeout(t)
-  }, [recalculate])
+    const t = setTimeout(recalculate, 100);
+    return () => clearTimeout(t);
+  }, [recalculate]);
 
   useEffect(() => {
-    window.addEventListener('resize', recalculate)
-    return () => window.removeEventListener('resize', recalculate)
-  }, [recalculate])
+    window.addEventListener("resize", recalculate);
+    return () => window.removeEventListener("resize", recalculate);
+  }, [recalculate]);
 
-  if (arrows.length === 0) return null
+  if (arrows.length === 0) return null;
 
   // One marker per unique color
-  const uniqueColors = [...new Set(arrows.map(a => a.color))]
+  const uniqueColors = [...new Set(arrows.map((a) => a.color))];
 
   return (
     <svg
       className="pointer-events-none absolute inset-0 z-10"
       width={size.w}
       height={size.h}
-      style={{ overflow: 'visible' }}
+      style={{ overflow: "visible" }}
     >
       <defs>
-        {uniqueColors.map(color => (
+        {uniqueColors.map((color) => (
           <marker
             key={color}
             id={`arrowhead-${color.slice(1)}`}
@@ -98,7 +112,7 @@ export function ArrowOverlay({ systems, cardRefs, containerRef }: Props) {
           </marker>
         ))}
       </defs>
-      {arrows.map(a => (
+      {arrows.map((a) => (
         <line
           key={a.id}
           x1={a.x1}
@@ -112,5 +126,5 @@ export function ArrowOverlay({ systems, cardRefs, containerRef }: Props) {
         />
       ))}
     </svg>
-  )
-}
+  );
+};

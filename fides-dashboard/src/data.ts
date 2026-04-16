@@ -4,20 +4,20 @@ import rawData from "../../sample_data.json";
 // This file is responsible for transforming the raw data from sample_data.json into the format we want to use in our app. It also extracts the unique data uses, data categories, and system types for use in filters and dropdowns.
 
 // here we get the leaf segment of a data category, e.g. "user.contact.email" -> "email"
-function leafSegment(category: string): string {
+export const leafSegment = (category: string): string => {
   const parts = category.split(".");
   return parts[parts.length - 1];
-}
+};
 
 // here we get the unique values from an array, e.g. ["email", "email", "phone"] -> ["email", "phone"]
 // we use a Set to deduplicate the values, and then convert it back to an array
-function unique<T>(arr: T[]): T[] {
+const unique = <T>(arr: T[]): T[] => {
   return [...new Set(arr)];
-}
+};
 
 // Here we normalise the raw data from sample_data.json into the format we want to use in our app.
 // We also extract the unique data uses and data categories for each system.
-function normalise(raw: RawSystem): System {
+const normalise = (raw: RawSystem): System => {
   const allCategories = raw.privacy_declarations.flatMap(
     (d) => d.data_categories
   );
@@ -33,7 +33,7 @@ function normalise(raw: RawSystem): System {
     dataCategoriesFull: unique(allCategories),
     dependencies: raw.system_dependencies
   };
-}
+};
 
 // Deduplicate by fides_key (keep first occurrence)
 const seen = new Set<string>();

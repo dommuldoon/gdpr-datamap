@@ -10,7 +10,10 @@ interface GridViewProps {
   showArrows: boolean;
 }
 
-function groupBy(systems: System[], mode: LayoutMode): Map<string, System[]> {
+const groupBy = (
+  systems: System[],
+  mode: LayoutMode
+): Map<string, System[]> => {
   const map = new Map<string, System[]>();
 
   if (mode === "systemType") {
@@ -30,9 +33,13 @@ function groupBy(systems: System[], mode: LayoutMode): Map<string, System[]> {
     }
   }
   return map;
-}
+};
 
-export function GridView({ systems, layoutMode, showArrows }: GridViewProps) {
+export const GridView = ({
+  systems,
+  layoutMode,
+  showArrows
+}: GridViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cardRefs, setCardRefs] = useState<Map<string, HTMLDivElement>>(
     new Map()
@@ -97,9 +104,9 @@ export function GridView({ systems, layoutMode, showArrows }: GridViewProps) {
                 <div
                   className="backdrop-blur-sm rounded-lg px-3 py-2"
                   style={{
-                    background: 'var(--col-header-bg)',
-                    border: '1px solid var(--card-border)',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                    background: "var(--col-header-bg)",
+                    border: "1px solid var(--card-border)",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.06)"
                   }}
                 >
                   <h2 className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
@@ -129,4 +136,4 @@ export function GridView({ systems, layoutMode, showArrows }: GridViewProps) {
       </motion.div>
     </div>
   );
-}
+};
