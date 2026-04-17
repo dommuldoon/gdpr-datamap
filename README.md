@@ -37,7 +37,7 @@ Bundle size is one big chunk and I did not have time left to employ code splitti
 
 # Any special/unique features you added:
 I added a draggable "Graph View" - it was not specified in the docs but it was fun to implement and could possilbe be developed into something more useful.
-Also there is a show/hide button for the dependency arrows.
+Also there is a show/hide button for the dependency arrows. Thre is also a toggle for light/dark mode in the top right corner.
 
 # Anything else you want us to know about:
 Even though I used a modern "Agentic" workflow with Claude I review every line of code. I find while AI often get things technically functioning well sometimes it needs a bit of restructure. Also I think its important whenever possible using AI/Agents etc you should try and know the code as well as if you wrote it all by hand. This is important from a maintenance/bugfix point of view but also from a psychological one as a dev - it helps you feel ownership and connection to the work.
