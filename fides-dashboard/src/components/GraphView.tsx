@@ -57,7 +57,7 @@ const COL_GAP = 60;
 const ROW_GAP = 40;
 const HEADER_H = 50;
 
-function buildLayout(systems: System[], mode: LayoutMode): Node[] {
+const buildLayout = (systems: System[], mode: LayoutMode): Node[] => {
   const groups = new Map<string, System[]>();
 
   if (mode === "systemType") {
@@ -96,7 +96,7 @@ function buildLayout(systems: System[], mode: LayoutMode): Node[] {
   }
 
   return nodes;
-}
+};
 
 export const GraphView = ({
   systems,
