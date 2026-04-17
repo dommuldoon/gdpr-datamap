@@ -33,7 +33,7 @@ Approx 4hours.
 That the extra duplicated item in the .json should be ignored.
 
 # Any trade-offs you made:
-Bundle size is one big chunk and I did not have time left to employ code splitting etc and so handle this issue in the end. Also some of the css (tailwind) could be moved to classes were the lines get long or where there is repetition.
+Bundle size is one big chunk and I did not have time left to employ code splitting etc and so handle this issue in the end. Also some of the css (tailwind) could be moved to classes were the lines get long or where there is repetition. Also due to time constraints I think the look and feel could be improved.
 
 # Any special/unique features you added:
 I added a draggable "Graph View" - it was not specified in the docs but it was fun to implement and could possilbe be developed into something more useful.
