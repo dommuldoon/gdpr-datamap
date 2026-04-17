@@ -19,12 +19,32 @@ Npm run test in that same folder will run all the component/unit tet that are lo
 
 E2E Tests live in `e2etests/` (configured in `playwright.config.ts`). The dev server runs on `http://localhost:5177`.
 
-```bash
+
 npx playwright test                        # Run all tests (all browsers)
 npx playwright test --project=chromium    # Chromium only
 npx playwright test e2eests/foo.spec.ts # Single file
 npx playwright test --ui                  # Interactive UI mode
 npx playwright test --debug               # Step-through debugger
+
+# Time spent: 
+Approx 4hours.
+
+# Any assumptions you made:
+That the extra duplicated item in the .json should be ignored.
+
+# Any trade-offs you made:
+Bundle size is one big chunk and I did not have time left to employ code splitting etc and so handle this issue in the end. Also some of the css (tailwind) could be moved to classes were the lines get long or where there is repetition.
+
+# Any special/unique features you added:
+I added a draggable "Graph View" - it was not specified in the docs but it was fun to implement and could possilbe be developed into something more useful.
+Also there is a show/hide button for the dependency arrows.
+
+# Anything else you want us to know about:
+Even though I used a modern "Agentic" workflow with Claude I review every line of code. I find while AI often get things technically functioning well sometimes it needs a bit of restructure. Also I think its important whenever possible using AI/Agents etc you should try and know the code as well as if you wrote it all by hand. This is important from a maintenance/bugfix point of view but also from a psychological one as a dev - it helps you feel ownership and connection to the work.
+
+# Any feedback you have on this technical challenge -- we care deeply about our hiring process here at Ethyca, and about the engineers who go through it (that's you!) -- we wholeheartedly promise any feedback will be met with a warm thank you!
+Yes! - I would like to thank you for not trying to get me to compute "how many golfballs does it take to fill up a jumbo jet?" or similar whilst 3-4 other devs stare on at me. I think the idea of a take home challenge is a good one as I worked as I would normally on a job and we all know any worries about "Vibe Coding" can be easily uncovered in the debrief. I dont get why more companies are not doing it this way still.
+
 
 
 # React + TypeScript + Vite
